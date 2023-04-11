@@ -22,17 +22,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
+          primarySwatch: Colors.blue,
+          cardTheme: const CardTheme(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(8.0),
+              ),
+            ),
+          )),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -90,7 +87,6 @@ class _MyHomePageState extends State<MyHomePage> {
             .nextPage()
             .then((value) => {if (value != null) _updateImages(value, false)});
       }
-
     });
   }
 
@@ -128,39 +124,54 @@ class _MyHomePageState extends State<MyHomePage> {
           itemCount: _vo.length,
           itemBuilder: (context, index) {
             return Card(
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 28,
-                      height: 28,
-                      decoration: const BoxDecoration(
-                          color: Colors.black12, shape: BoxShape.circle),
-                      padding: const EdgeInsets.all(2),
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: FadeInImage.assetNetwork(
-                            placeholder: 'images/pixabay_logo_square.png',
-                            image: _vo.elementAt(index).avatarUrl,
-                            imageErrorBuilder: (context, error, stack) =>
-                                Image.asset('images/pixabay_logo_square.png'),
+              child: InkWell(
+                customBorder: Theme.of(context).cardTheme.shape,
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Image.network(
+                            _vo.elementAt(index).imageUrl,
+                            alignment: Alignment.centerRight,
+                          ),
+                        );
+                      });
+                },
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 28,
+                        height: 28,
+                        decoration: const BoxDecoration(
+                            color: Colors.black12, shape: BoxShape.circle),
+                        padding: const EdgeInsets.all(2),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: FadeInImage.assetNetwork(
+                              placeholder: 'images/pixabay_logo_square.png',
+                              image: _vo.elementAt(index).avatarUrl,
+                              imageErrorBuilder: (context, error, stack) =>
+                                  Image.asset('images/pixabay_logo_square.png'),
+                              fit: BoxFit.cover,
+                            )),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(child: Text(_vo.elementAt(index).name)),
+                      const SizedBox(width: 16),
+                      SizedBox(
+                          width: 44,
+                          height: 44,
+                          child: Image.network(
+                            _vo.elementAt(index).imageUrl,
+                            alignment: Alignment.centerRight,
                             fit: BoxFit.cover,
-                          )),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(child: Text(_vo.elementAt(index).name)),
-                    const SizedBox(width: 16),
-                    SizedBox(
-                        width: 44,
-                        height: 44,
-                        child: Image.network(
-                          _vo.elementAt(index).imageUrl,
-                          alignment: Alignment.centerRight,
-                          fit: BoxFit.cover,
-                        ))
-                  ],
+                          ))
+                    ],
+                  ),
                 ),
               ),
             );
