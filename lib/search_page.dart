@@ -3,16 +3,19 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_pixabay/autocomplete_list.dart';
+import 'package:flutter_pixabay/di/injection.dart';
+import 'package:flutter_pixabay/repository/history_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Column(children: [
+      child: Column(children: const [
         SafeArea(child: SearchBar()),
         // SizedBox(
         //     width: double.infinity, height: kToolbarHeight, child: SearchBar()),
-        const Expanded(child: AutoCompleteList())
+        Expanded(child: AutoCompleteList())
       ]),
     );
     return Column(children: [SearchBar(), Expanded(child: AutoCompleteList())]);
@@ -20,6 +23,8 @@ class SearchPage extends StatelessWidget {
 }
 
 class SearchBar extends StatefulWidget {
+  const SearchBar({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return _SearchBarState();
@@ -28,6 +33,8 @@ class SearchBar extends StatefulWidget {
 
 class _SearchBarState extends State<SearchBar> {
   final TextEditingController _controller = TextEditingController();
+  final QueryHistoryRepository _repository = getIt<QueryHistoryRepository>();
+  // final SharedPreferences _sp = getIt<SharedPreferences>();
   var _debounce;
 
   @override
@@ -88,11 +95,11 @@ class _SearchBarState extends State<SearchBar> {
                     onChanged: (text) {
                       if (_debounce?.isActive ?? false) _debounce.cancel();
                       _debounce = Timer(const Duration(milliseconds: 250), () {
-                        // todo: show suggestion
+                        // todo: filter suggestion
                       });
                     },
                     onSubmitted: (text) {
-                      // todo: query
+                      _repository.saveQuery(text);
                       Navigator.pop(context, text);
                     },
                   ))),

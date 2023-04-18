@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   # DI
   get_it: ^7.2.0
+  injectable: ^2.1.1
 
   # API request
   retrofit: '>=4.0.0 <5.0.0'
@@ -45,6 +46,9 @@ dependencies:
 
   # Visibility-aware list view
   inview_notifier_list: ^3.0.0
+
+  # shared preferenced
+  shared_preferences: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -59,6 +63,7 @@ dev_dependencies:
 
   retrofit_generator: '>=6.0.0 <7.0.0'
   build_runner: '>=2.3.0 <4.0.0'
+  injectable_generator: ^2.1.5
   json_serializable: ^6.6.0
 
 # For information on the generic Dart part of this file, see the

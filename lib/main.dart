@@ -7,10 +7,13 @@ import 'package:flutter_pixabay/repository/picture_repository.dart';
 import 'package:flutter_pixabay/search_page.dart';
 import 'package:flutter_pixabay/service/pixabay_service.dart';
 import 'package:inview_notifier_list/inview_notifier_list.dart';
+import 'di/injection.dart';
 import 'entity/vo/image_item_vo.dart';
 import 'list.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  configureDependencies();
   runApp(const MyApp());
 }
 
@@ -25,6 +28,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           primarySwatch: Colors.blue,
+          dividerTheme: const DividerThemeData(
+            space: 0,
+            thickness: 1,
+          ),
           cardTheme: const CardTheme(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
@@ -134,12 +141,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _onClickSearch() async {
     final result = await Navigator.pushNamed(context, '/search');
+    if (result == null) return;
     if (!mounted) return;
 
-    var newQuery = result as String;
-    _picturePagingLogic
-        .searchImage(newQuery)
-        .then((value) => {if (value != null) _updateImages(value, true)});
+    if (result is String) {
+      _picturePagingLogic
+          .searchImage(result)
+          .then((value) => {if (value != null) _updateImages(value, true)});
+    }
   }
 
   @override
