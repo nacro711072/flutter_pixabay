@@ -1,3 +1,8 @@
+[2023-04-19]
+- Add loading indicator
+  - [Home UI] Change `opacity` when loading progressing.
+  - [Home UI] Ignore pointer when loading progressing.
+  
 [2023-04-18]
 - Update search bar UI
   - [IconButton] Adjust ripple effect size (too large).

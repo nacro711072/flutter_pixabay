@@ -39,7 +39,6 @@ class MyApp extends StatelessWidget {
               ),
             ),
           )),
-      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
       initialRoute: '/',
       onGenerateRoute: (setting) {
         var routes = <String, WidgetBuilder>{
@@ -52,10 +51,6 @@ class MyApp extends StatelessWidget {
         return MaterialPageRoute(
             builder: (ctx) => builder(ctx), settings: setting);
       },
-      // routes: {
-      //   '/': (context) => const MyHomePage(title: 'Flutter Demo Home Page'),
-      //   '/search': (context) => SearchPage(),
-      // },
     );
   }
 }
@@ -145,6 +140,10 @@ class _MyHomePageState extends State<MyHomePage> {
     if (!mounted) return;
 
     if (result is String) {
+      setState(() {
+        _isLoading = true;
+      });
+
       _picturePagingLogic
           .searchImage(result)
           .then((value) => {if (value != null) _updateImages(value, true)});
@@ -153,12 +152,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -173,68 +166,79 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: const Icon(Icons.search))
         ],
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          controller: _scrollController,
-          itemCount: _vo.length,
-          itemBuilder: (context, index) {
-            return Card(
-              child: InkWell(
-                customBorder: Theme.of(context).cardTheme.shape,
-                onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: Image.network(
-                            _vo.elementAt(index).imageUrl,
-                            alignment: Alignment.centerRight,
-                          ),
-                        );
-                      });
-                },
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 28,
-                        height: 28,
-                        decoration: const BoxDecoration(
-                            color: Colors.black12, shape: BoxShape.circle),
-                        padding: const EdgeInsets.all(2),
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: FadeInImage.assetNetwork(
-                              placeholder: 'images/pixabay_logo_square.png',
-                              image: _vo.elementAt(index).avatarUrl,
-                              imageErrorBuilder: (context, error, stack) =>
-                                  Image.asset('images/pixabay_logo_square.png'),
-                              fit: BoxFit.cover,
-                            )),
+      body: Stack(
+        children: [
+          Opacity(
+            opacity: _isLoading ? 0.3 : 1.0,
+            child: IgnorePointer(
+              ignoring: _isLoading,
+              child: ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                controller: _scrollController,
+                itemCount: _vo.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: InkWell(
+                      customBorder: Theme.of(context).cardTheme.shape,
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content: Image.network(
+                                  _vo.elementAt(index).imageUrl,
+                                  alignment: Alignment.centerRight,
+                                ),
+                              );
+                            });
+                      },
+                      child: Container(
+                        padding:
+                            const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 28,
+                              height: 28,
+                              decoration: const BoxDecoration(
+                                  color: Colors.black12, shape: BoxShape.circle),
+                              padding: const EdgeInsets.all(2),
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: FadeInImage.assetNetwork(
+                                    placeholder: 'images/pixabay_logo_square.png',
+                                    image: _vo.elementAt(index).avatarUrl,
+                                    imageErrorBuilder: (context, error, stack) =>
+                                        Image.asset(
+                                            'images/pixabay_logo_square.png'),
+                                    fit: BoxFit.cover,
+                                  )),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(child: Text(_vo.elementAt(index).name)),
+                            const SizedBox(width: 16),
+                            SizedBox(
+                                width: 44,
+                                height: 44,
+                                child: Image.network(
+                                  _vo.elementAt(index).imageUrl,
+                                  alignment: Alignment.centerRight,
+                                  fit: BoxFit.cover,
+                                ))
+                          ],
+                        ),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(child: Text(_vo.elementAt(index).name)),
-                      const SizedBox(width: 16),
-                      SizedBox(
-                          width: 44,
-                          height: 44,
-                          child: Image.network(
-                            _vo.elementAt(index).imageUrl,
-                            alignment: Alignment.centerRight,
-                            fit: BoxFit.cover,
-                          ))
-                    ],
-                  ),
-                ),
+                    ),
+                  );
+                },
               ),
-            );
-          },
-        ),
+            ),
+          ),
+          Center(
+            child: Visibility(
+                visible: _isLoading, child: const CircularProgressIndicator()),
+          )
+        ],
       ),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: _incrementCounter,
