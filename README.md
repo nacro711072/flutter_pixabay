@@ -13,6 +13,8 @@
 ### 細項
 1. 常用的Widget -> `Col`, `Row`, `Image`, `Text`, `ListView`, `TextField`...
 2. 常用的 UI 操作 -> ImageShape, PlaceHolder, onScrollBottom
-4. 基本的 API request -> Doi, Retrofit
-3. Di -> get_it
-4. 頁面切換
+3. 基本的 API request -> Doi, Retrofit
+4. Di -> get_it
+5. 頁面router 操作
+
+## [ChangeLog](changelog.md)
