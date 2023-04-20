@@ -2,7 +2,8 @@
 - Refactor home page
   - [Router] Refactor router
   - [DI] home page dependency refactor
-
+  - [UI] 拆分元件
+  
 [2023-04-19]
 - Add loading indicator
   - [Home UI] Change `opacity` when loading progressing.

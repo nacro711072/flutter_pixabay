@@ -6,6 +6,8 @@ import '../../entity/vo/image_item_vo.dart';
 import '../../logic/picture_paging_logic.dart';
 import '../../repository/picture_repository.dart';
 import '../../service/pixabay_service.dart';
+import 'component/image_item_cell.dart';
+import 'component/image_preview_view.dart';
 
 class HomeArguments {
   final String query;
@@ -38,23 +40,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List<ImageItemVO> _vo = List.empty(growable: true);
 
-  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
 
     _startFetchImage(widget.queryTarget);
-
-    _scrollController.addListener(() {
-      var scrollPosition = _scrollController.position;
-      var isNearBottom =
-          scrollPosition.pixels > scrollPosition.maxScrollExtent * 0.9;
-
-      if (isNearBottom) {
-        _nextPage();
-      }
-    });
   }
 
   _startFetchImage(String query) {
@@ -120,68 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
             opacity: _isLoading ? 0.3 : 1.0,
             child: IgnorePointer(
               ignoring: _isLoading,
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                controller: _scrollController,
-                itemCount: _vo.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: InkWell(
-                      customBorder: Theme.of(context).cardTheme.shape,
-                      onTap: () {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                content: Image.network(
-                                  _vo.elementAt(index).imageUrl,
-                                  alignment: Alignment.centerRight,
-                                ),
-                              );
-                            });
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 16),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 28,
-                              height: 28,
-                              decoration: const BoxDecoration(
-                                  color: Colors.black12,
-                                  shape: BoxShape.circle),
-                              padding: const EdgeInsets.all(2),
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: FadeInImage.assetNetwork(
-                                    placeholder:
-                                        'images/pixabay_logo_square.png',
-                                    image: _vo.elementAt(index).avatarUrl,
-                                    imageErrorBuilder:
-                                        (context, error, stack) => Image.asset(
-                                            'images/pixabay_logo_square.png'),
-                                    fit: BoxFit.cover,
-                                  )),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(child: Text(_vo.elementAt(index).name)),
-                            const SizedBox(width: 16),
-                            SizedBox(
-                                width: 44,
-                                height: 44,
-                                child: Image.network(
-                                  _vo.elementAt(index).imageUrl,
-                                  alignment: Alignment.centerRight,
-                                  fit: BoxFit.cover,
-                                ))
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
+              child: ImagePreviewList(voList: _vo, onScrollBottom: _nextPage,),
             ),
           ),
           Center(
