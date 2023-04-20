@@ -10,7 +10,7 @@ abstract class PixabayService {
   factory PixabayService(Dio dio, {String baseUrl}) = _PixabayService;
 
   // static final baseUrl = "https://pixabay.com";
-  static final KEY = "31774191-9ff9a71020a62d34f9b62e0a5";
+  static const KEY = "31774191-9ff9a71020a62d34f9b62e0a5";
 
   @GET("/api")
   Future<PixabayRemoteData> search(@Query("q") String q,

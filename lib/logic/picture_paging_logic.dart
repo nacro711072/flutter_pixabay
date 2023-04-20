@@ -7,7 +7,7 @@ class PicturePagingLogic {
   PicturePagingLogic(this._repo);
 
   final PictureRepository _repo;
-  ImageQueryIntent? _queryIntent;
+  _ImageQueryIntent? _queryIntent;
 
   Future<PixabayRemoteData?> searchImage(String query) async {
     var intent = _newQueryIntent(query);
@@ -18,15 +18,15 @@ class PicturePagingLogic {
     return await _queryIntent?.fetchNextPageData();
   }
 
-  ImageQueryIntent _newQueryIntent(String query) {
+  _ImageQueryIntent _newQueryIntent(String query) {
     _queryIntent?.cancel();
-    var newIntent = ImageQueryIntent(query, _repo);
+    var newIntent = _ImageQueryIntent(query, _repo);
     _queryIntent = newIntent;
     return newIntent;
   }
 }
 
-class ImageQueryIntent {
+class _ImageQueryIntent {
   final String _query;
   final PictureRepository _repo;
 
@@ -34,7 +34,7 @@ class ImageQueryIntent {
   bool _isFetching = false;
   CancelToken? _cancelToken;
 
-  ImageQueryIntent(this._query, this._repo);
+  _ImageQueryIntent(this._query, this._repo);
 
   Future<PixabayRemoteData?> fetchNextPageData() async {
     if(_isFetching) return null;
