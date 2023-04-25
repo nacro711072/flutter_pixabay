@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_pixabay/repository/picture_repository.dart';
 
@@ -34,6 +36,8 @@ class _ImageQueryIntent {
   bool _isFetching = false;
   CancelToken? _cancelToken;
 
+  final StreamController _streamController = StreamController();
+
   _ImageQueryIntent(this._query, this._repo);
 
   Future<PixabayRemoteData?> fetchNextPageData() async {
@@ -42,6 +46,7 @@ class _ImageQueryIntent {
 
     _cancelToken = CancelToken();
     var searchResponse = await _repo.searchImage(_query, page: _currentPage + 1, cancelToken: _cancelToken);
+    _streamController.add(searchResponse.hits);
     _currentPage += 1;
     _isFetching = false;
     return searchResponse;

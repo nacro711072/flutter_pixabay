@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pixabay/entity/vo/image_item_vo.dart';
 
 import 'image_item_cell.dart';
@@ -64,6 +65,8 @@ class _ImagePreviewState extends State<_ImagePreviewStateWidget> {
     return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       controller: _scrollController,
+      prototypeItem: ImageItemCell(widget.voList.first),
+      addAutomaticKeepAlives: true,
       itemCount: widget.voList.length,
       itemBuilder: (context, index) {
         return ImageItemCell(widget.voList[index]);

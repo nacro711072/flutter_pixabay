@@ -1,16 +1,8 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_pixabay/logic/picture_paging_logic.dart';
 import 'package:flutter_pixabay/page/home/home.dart';
-import 'package:flutter_pixabay/repository/picture_repository.dart';
 import 'package:flutter_pixabay/search_page.dart';
-import 'package:flutter_pixabay/service/pixabay_service.dart';
-import 'package:inview_notifier_list/inview_notifier_list.dart';
 import 'di/injection.dart';
-import 'entity/vo/image_item_vo.dart';
-import 'list.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

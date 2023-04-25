@@ -1,12 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pixabay/di/injection.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../entity/vo/image_item_vo.dart';
-import '../../logic/picture_paging_logic.dart';
-import '../../repository/picture_repository.dart';
-import '../../service/pixabay_service.dart';
-import 'component/image_item_cell.dart';
+import 'bloc/ImageListBloc.dart';
 import 'component/image_preview_view.dart';
 
 class HomeArguments {
@@ -33,13 +28,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final PicturePagingLogic _picturePagingLogic =
-      PicturePagingLogic(getIt<PictureRepository>());
-
-  bool _isLoading = true;
-
-  final List<ImageItemVO> _vo = List.empty(growable: true);
-
+  final _imageListBloc = ImageListBloc(ImageListState.initState());
 
   @override
   void initState() {
@@ -49,34 +38,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _startFetchImage(String query) {
-    setState(() {
-      _isLoading = true;
-    });
-
-    _picturePagingLogic
-        .searchImage(query)
-        .then((value) => {if (value != null) _updateImages(value, true)});
+    _imageListBloc.add(QueryEvent(query));
   }
 
   _nextPage() {
-    setState(() {
-      _isLoading = true;
-    });
-
-    _picturePagingLogic
-        .nextPage()
-        .then((value) => {if (value != null) _updateImages(value, false)});
-  }
-
-  _updateImages(PixabayRemoteData data, bool reset) {
-    setState(() {
-      var vos = data.hits?.map((e) => ImageItemVO(e.id ?? 0, e.user ?? "",
-              e.userImageURL ?? "", e.previewURL ?? "")) ??
-          List.empty();
-      if (reset) _vo.clear();
-      _vo.addAll(vos);
-      _isLoading = false;
-    });
+    _imageListBloc.add(LoadMoreEvent());
   }
 
   _onClickSearch() async {
@@ -105,26 +71,28 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: const Icon(Icons.search))
         ],
       ),
-      body: Stack(
-        children: [
-          Opacity(
-            opacity: _isLoading ? 0.3 : 1.0,
-            child: IgnorePointer(
-              ignoring: _isLoading,
-              child: ImagePreviewList(voList: _vo, onScrollBottom: _nextPage,),
-            ),
-          ),
-          Center(
-            child: Visibility(
-                visible: _isLoading, child: const CircularProgressIndicator()),
-          )
-        ],
+      body: BlocBuilder(
+        bloc: _imageListBloc,
+        builder: (context, state) {
+          var imageState = state as ImageListState;
+          return Stack(
+            children: [
+              Opacity(
+                opacity: imageState.loading ? 0.3 : 1.0,
+                child: IgnorePointer(
+                  ignoring: imageState.loading,
+                  child: ImagePreviewList(voList: imageState.voList, onScrollBottom: _nextPage,),
+                ),
+              ),
+              Center(
+                child: Visibility(
+                    visible: imageState.loading, child: const CircularProgressIndicator()),
+              )
+            ],
+          );
+        },
+
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

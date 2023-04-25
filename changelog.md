@@ -1,3 +1,6 @@
+[2023-04-25]
+- [Refactor Home] Use bloc pattern to re-write logic.
+
 [2023-04-20]
 - Refactor home page
   - [Router] Refactor router
