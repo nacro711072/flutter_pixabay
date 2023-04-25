@@ -7,14 +7,18 @@
 ### 大方向
 - 製作一套基本APP 功能: 從API request 到UI 顯示讓User 互動
 - dart 語法學習
-- 熟悉flutter 框架 -> State, Lifecycle, Widget
+- 熟悉flutter 框架
+- 熟悉flutter 常用套件
+- flutter 常用 design pattern
 
 
 ### 細項
 1. 常用的Widget -> `Col`, `Row`, `Image`, `Text`, `ListView`, `TextField`...
-2. 常用的 UI 操作 -> ImageShape, PlaceHolder, onScrollBottom
+2. 常用的 UI 操作 -> ImageShape, PlaceHolder, onScrollBottom, ...
 3. 基本的 API request -> Doi, Retrofit
 4. Di -> get_it
 5. 頁面router 操作
+6. design pattern: Bloc
+7. element tree, key, render 之間的關係.
 
 ## [ChangeLog](changelog.md)
