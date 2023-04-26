@@ -65,7 +65,7 @@ class _ImagePreviewState extends State<_ImagePreviewStateWidget> {
     return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       controller: _scrollController,
-      prototypeItem: ImageItemCell(widget.voList.first),
+      prototypeItem: const ImageItemCell(ImageItemVO.empty()),
       addAutomaticKeepAlives: true,
       itemCount: widget.voList.length,
       itemBuilder: (context, index) {
