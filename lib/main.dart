@@ -1,4 +1,5 @@
 
+import 'package:alice/alice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pixabay/page/home/home.dart';
 import 'package:flutter_pixabay/search_page.dart';
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      navigatorKey: getIt<Alice>().getNavigatorKey(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           primarySwatch: Colors.blue,

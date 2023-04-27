@@ -40,9 +40,9 @@ dependencies:
   injectable: ^2.1.1
 
   # API request
-  retrofit: '>=4.0.0 <5.0.0'
+  retrofit: 3.3.1
   logger: any  #for logging purpose
-  dio: ^5.1.1
+  dio: 4.0.6
 
   # Visibility-aware list view
   inview_notifier_list: ^3.0.0
@@ -50,6 +50,12 @@ dependencies:
   # shared preferenced
   shared_preferences: ^2.1.0
   flutter_bloc: ^8.1.2
+
+  # Debug tool
+  alice: ^0.3.2
+
+dependencies_overrides:
+  open_filex: ^4.3.2
 
 dev_dependencies:
   flutter_test:
@@ -62,7 +68,7 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
 
-  retrofit_generator: '>=6.0.0 <7.0.0'
+  retrofit_generator: 4.2.0
   build_runner: '>=2.3.0 <4.0.0'
   injectable_generator: ^2.1.5
   json_serializable: ^6.6.0
