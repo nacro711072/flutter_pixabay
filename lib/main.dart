@@ -4,9 +4,9 @@ import 'package:flutter_pixabay/page/home/home.dart';
 import 'package:flutter_pixabay/search_page.dart';
 import 'di/injection.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  configureDependencies();
+  await configureDependencies();
   runApp(const MyApp());
 }
 

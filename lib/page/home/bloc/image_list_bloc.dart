@@ -21,21 +21,18 @@ class ImageListBloc<Event extends ImageListEvent>
     async {
       if (event is QueryEvent) {
         emit(ImageListState.loading(_vo));
-        var value = await _picturePagingLogic
-            .searchImage(event.query);
-            // .then((value) => {if (value != null) _vo.update(value, true, emit)});
+        var value = await _picturePagingLogic.searchImage(event.query);
         if (value != null) _vo.update(value, true, emit);
 
       } else if (event is LoadMoreEvent) {
         emit(ImageListState.loading(_vo));
-        var value = await _picturePagingLogic
-          .nextPage();
-          // .then((value) => {if (value != null) _vo.update(value, true, emit)});
+        var value = await _picturePagingLogic.nextPage();
         if (value != null) _vo.update(value, false, emit);
       }
     });
   }
 
+  ImageListBloc.create() : this(ImageListState.initState());
 
   @override
   void onEvent(Event event) {
@@ -72,8 +69,8 @@ class ImageListState {
     voList = old;
   }
 
-  late bool loading;
-  late List<ImageItemVO> voList;
+  late final bool loading;
+  late final List<ImageItemVO> voList;
 
 }
 

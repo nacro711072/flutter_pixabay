@@ -1,3 +1,6 @@
+[2023-04-27]
+- [Refactor Home] Use bloc provider.
+
 [2023-04-25]
 - [Refactor Home] Use bloc pattern to re-write logic.
 
