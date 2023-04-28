@@ -21,6 +21,9 @@ import '../service/pixabay_service.dart' as _i5;
 import 'di_module.dart' as _i10;
 import 'service_module.dart' as _i9;
 
+const String _dev = 'dev';
+const String _prod = 'prod';
+
 extension GetItInjectableX on _i1.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
   Future<_i1.GetIt> init({
@@ -35,7 +38,14 @@ extension GetItInjectableX on _i1.GetIt {
     final registerModule = _$RegisterModule();
     final serviceModule = _$ServiceModule();
     gh.singleton<_i3.Alice>(registerModule.getAlice());
-    gh.factory<_i4.Dio>(() => serviceModule.getDio(gh<_i3.Alice>()));
+    gh.factory<_i4.Dio>(
+      () => serviceModule.getDevDio(gh<_i3.Alice>()),
+      registerFor: {_dev},
+    );
+    gh.factory<_i4.Dio>(
+      () => serviceModule.getProDio(),
+      registerFor: {_prod},
+    );
     gh.factory<_i5.PixabayService>(
         () => serviceModule.getService(gh<_i4.Dio>()));
     await gh.factoryAsync<_i6.SharedPreferences>(

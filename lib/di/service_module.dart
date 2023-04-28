@@ -9,13 +9,9 @@ import '../service/pixabay_service.dart';
 @module
 abstract class ServiceModule {
 
-  Dio getDio(Alice alice) {
+  @dev
+  Dio getDevDio(Alice alice) {
     var dio = Dio(BaseOptions(contentType: "application/json"));
-    _initializeInterceptors(dio, alice);
-    return dio;
-  }
-
-  _initializeInterceptors(Dio dio, Alice alice) {
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
@@ -25,7 +21,24 @@ abstract class ServiceModule {
       ),
     );
     dio.interceptors.add(alice.getDioInterceptor());
+    return dio;
   }
+
+  @prod
+  Dio getProDio() {
+    var dio = Dio(BaseOptions(contentType: "application/json"));
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          options.queryParameters.putIfAbsent("key", () => PixabayService.KEY);
+          return handler.next(options);
+        },
+      ),
+    );
+
+    return dio;
+  }
+
 
   PixabayService getService(Dio dio) => PixabayService(dio);
 }

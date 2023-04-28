@@ -8,6 +8,7 @@ abstract class RegisterModule {
   @preResolve
   Future<SharedPreferences> get prefs => SharedPreferences.getInstance();
 
+  @dev
   @Singleton()
   Alice getAlice() {
     return Alice();
