@@ -18,7 +18,6 @@ class SearchPage extends StatelessWidget {
         Expanded(child: AutoCompleteList())
       ]),
     );
-    return Column(children: [SearchBar(), Expanded(child: AutoCompleteList())]);
   }
 }
 

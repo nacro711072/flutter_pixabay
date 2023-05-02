@@ -1,3 +1,7 @@
+[2023-04-28]
+ - [Alice] add Alice to inspect HTTP request.
+ - [Flavor] Set prod/dev flavor.
+
 [2023-04-27]
 - [Refactor Home] Use bloc provider.
 

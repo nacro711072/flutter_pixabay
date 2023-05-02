@@ -16,15 +16,12 @@ class AutoCompleteList extends StatefulWidget {
 class _AutoCompleteListState extends State<AutoCompleteList> {
   final QueryHistoryRepository _repository = getIt<QueryHistoryRepository>();
 
-  // final SharedPreferences _sp = getIt<SharedPreferences>(instanceName: "SharedPreferences");
-  // final QueryHistoryRepository _repository = QueryHistoryRepository.from(getIt<SharedPreferences>());
   late List<String> _list;
 
   @override
   void initState() {
     super.initState();
     _list = _repository.getHistory();
-    // _list = List.generate(1, (index) => "test");
   }
 
   @override
@@ -44,6 +41,7 @@ class _AutoCompleteListState extends State<AutoCompleteList> {
           ),
           Expanded(
               child: ListView.separated(
+            padding: EdgeInsets.zero,
             itemCount: _list.length,
             itemBuilder: (context, index) {
               return InkWell(
