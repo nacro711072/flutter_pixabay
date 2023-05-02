@@ -44,6 +44,7 @@ class _AutoCompleteListState extends State<AutoCompleteList> {
           ),
           Expanded(
               child: ListView.separated(
+            padding: EdgeInsets.zero,
             itemCount: _list.length,
             itemBuilder: (context, index) {
               return InkWell(
