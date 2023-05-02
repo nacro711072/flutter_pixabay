@@ -20,5 +20,7 @@
 5. 頁面router 操作
 6. design pattern: Bloc
 7. element tree, key, render 之間的關係.
+8. Alice tools
+9. flavor 切分 prod/dev environment & update DI with environment.
 
 ## [ChangeLog](changelog.md)
