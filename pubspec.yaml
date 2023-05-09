@@ -53,6 +53,7 @@ dependencies:
 
   # Debug tool
   alice: ^0.3.2
+  cached_network_image: ^3.2.3
 
 dependencies_overrides:
   open_filex: ^4.3.2

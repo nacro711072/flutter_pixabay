@@ -24,6 +24,7 @@
 7. element tree, key, render 之間的關係.
 8. Alice tools
 9. flavor 切分 prod/dev environment & update DI with environment.
+10. Use imageNetworkCache.
 
 ## [ChangeLog](changelog.md)
 
