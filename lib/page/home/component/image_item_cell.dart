@@ -1,6 +1,8 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pixabay/component/placeholder.dart';
 import 'package:flutter_pixabay/entity/vo/image_item_vo.dart';
 
 class ImageItemCell extends StatelessWidget {
@@ -18,9 +20,11 @@ class ImageItemCell extends StatelessWidget {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    content: Image.network(
-                      _vo.imageUrl,
+                    content: CachedNetworkImage(
+                      imageUrl: _vo.imageUrl,
                       alignment: Alignment.centerRight,
+                      placeholder: (context, url) => const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => const ImagePlaceHolder(),
                     ),
                   );
                 });
@@ -39,13 +43,10 @@ class ImageItemCell extends StatelessWidget {
                   padding: const EdgeInsets.all(2),
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: FadeInImage.assetNetwork(
-                        placeholder:
-                        'images/pixabay_logo_square.png',
-                        image: _vo.avatarUrl,
-                        imageErrorBuilder:
-                            (context, error, stack) => Image.asset(
-                            'images/pixabay_logo_square.png'),
+                      child: CachedNetworkImage(
+                        placeholder: (context, url) => const ImagePlaceHolder(),
+                        imageUrl: _vo.avatarUrl,
+                        errorWidget: (context, url, error) => const ImagePlaceHolder(),
                         fit: BoxFit.cover,
                       )),
                 ),
@@ -55,10 +56,11 @@ class ImageItemCell extends StatelessWidget {
                 SizedBox(
                     width: 44,
                     height: 44,
-                    child: Image.network(
-                      _vo.imageUrl,
+                    child: CachedNetworkImage(
+                      imageUrl: _vo.imageUrl,
                       alignment: Alignment.centerRight,
                       fit: BoxFit.cover,
+                      placeholder: (context, url) => const ImagePlaceHolder(),
                     ))
               ],
             ),
