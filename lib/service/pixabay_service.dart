@@ -36,45 +36,6 @@ abstract class PixabayService {
       // Indent JSON output. This option should not be used in production.
       );
 
-// Future<Response> _request(String path, {required String method, String? data}) async {
-//   Response response;
-//   try {
-//     response = await _dio.request(path,
-//         options: Options(method: method, headers: {
-//           HttpHeaders.contentTypeHeader: "application/json",
-//         }),
-//         data: data);
-//   } on DioError catch (e) {
-//     print(e.message);
-//     throw Exception(e.message);
-//   }
-//
-//   return response;
-// }
-//
-// Future<Response> get(String path) {
-//   return _request(path, method: 'get');
-// }
-//
-// Future<Response> post(String path, Map<String, dynamic> data) {
-//   return _request(path, method: 'post', data: jsonEncode(data));
-// }
-
-// initializeInterceptors() {
-//   _dio.interceptors.add(
-//     InterceptorsWrapper(
-//       onRequest: (options, handler) {
-//         options.queryParameters.putIfAbsent("key", () => {KEY});
-//         return handler.next(options);
-//       },
-//     ),
-//   );
-//
-//   _dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
-//     print("uri: ${options.uri}");
-//     return handler.next(options);
-//   }));
-// }
 }
 
 @JsonSerializable()
