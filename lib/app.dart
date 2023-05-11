@@ -2,7 +2,7 @@ import 'package:alice/alice.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pixabay/page/home/home.dart';
-import 'package:flutter_pixabay/search_page.dart';
+import 'package:flutter_pixabay/page/search/search_page.dart';
 
 import 'di/injection.dart';
 

@@ -4,16 +4,16 @@ import 'package:flutter_pixabay/di/injection.dart';
 import 'package:flutter_pixabay/repository/history_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AutoCompleteList extends StatefulWidget {
-  const AutoCompleteList({super.key});
+class SearchHistoryList extends StatefulWidget {
+  const SearchHistoryList({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _AutoCompleteListState();
+    return _SearchHistoryListState();
   }
 }
 
-class _AutoCompleteListState extends State<AutoCompleteList> {
+class _SearchHistoryListState extends State<SearchHistoryList> {
   final QueryHistoryRepository _repository = getIt<QueryHistoryRepository>();
 
   late List<String> _list;

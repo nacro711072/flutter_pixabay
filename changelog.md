@@ -1,3 +1,7 @@
+[2023-05-11]
+- [Image] Use imageNetworkCache.
+- [Feature] Implement search suggestion items list.
+ 
 [2023-04-28]
  - [Alice] add Alice to inspect HTTP request.
  - [Flavor] Set prod/dev flavor.

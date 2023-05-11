@@ -13,7 +13,7 @@ abstract class GoogleSuggestionService {
       {String baseUrl}) = _GoogleSuggestionService;
 
   @GET("/complete/search")
-  Future<List<String>> suggestionQuery(
+  Future<String> suggestionQuery(
       @Query("q") String q,
       {@Query("client") String client = "chrome"}
   );

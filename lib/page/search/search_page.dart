@@ -1,22 +1,39 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_pixabay/autocomplete_list.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_pixabay/page/search/bloc/SearchBloc.dart';
+import 'package:flutter_pixabay/page/search/search_body.dart';
 import 'package:flutter_pixabay/di/injection.dart';
 import 'package:flutter_pixabay/repository/history_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_pixabay/repository/suggestion_repository.dart';
+
+import 'bloc/SuggestionBloc.dart';
 
 class SearchPage extends StatelessWidget {
+  final QueryHistoryRepository _queryHistoryRepository =
+      getIt<QueryHistoryRepository>();
+
+  SearchPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Column(children: const [
-        SafeArea(child: SearchBar()),
-        // SizedBox(
-        //     width: double.infinity, height: kToolbarHeight, child: SearchBar()),
-        Expanded(child: AutoCompleteList())
-      ]),
+      child: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+                create: (context) => SuggestionBloc(SuggestionState.hide())),
+            BlocProvider(
+                create: (context) => SearchBloc((query) {
+                      if (query != null) {
+                        _queryHistoryRepository.saveQuery(query);
+                      }
+                      Navigator.pop(context, query);
+                    })),
+          ],
+          child: Column(children: const [
+            SafeArea(child: SearchBar()),
+            Expanded(child: SearchBody())
+          ])),
     );
   }
 }
@@ -33,8 +50,10 @@ class SearchBar extends StatefulWidget {
 class _SearchBarState extends State<SearchBar> {
   final TextEditingController _controller = TextEditingController();
   final QueryHistoryRepository _repository = getIt<QueryHistoryRepository>();
+  final SuggestionRepository _suggestionRepository =
+      getIt<SuggestionRepository>();
+
   // final SharedPreferences _sp = getIt<SharedPreferences>();
-  var _debounce;
 
   @override
   void initState() {
@@ -92,14 +111,10 @@ class _SearchBarState extends State<SearchBar> {
                     textAlign: TextAlign.start,
                     textAlignVertical: TextAlignVertical.center,
                     onChanged: (text) {
-                      if (_debounce?.isActive ?? false) _debounce.cancel();
-                      _debounce = Timer(const Duration(milliseconds: 250), () {
-                        // todo: filter suggestion
-                      });
+                      context.read<SuggestionBloc>().add(QueryEvent(text));
                     },
                     onSubmitted: (text) {
-                      _repository.saveQuery(text);
-                      Navigator.pop(context, text);
+                      context.read<SearchBloc>().add(text);
                     },
                   ))),
         ],

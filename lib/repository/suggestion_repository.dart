@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:flutter_pixabay/service/google_suggestion_service.dart';
 import 'package:injectable/injectable.dart';
 
@@ -11,7 +13,8 @@ class SuggestionRepository {
 
   Future<List<dynamic>> getSuggestions(String q) async {
     var response = await _service.suggestionQuery(q);
-    if (response == null || response.isEmpty || response.length < 2) return List.empty();
-    return response[1] as List<dynamic>;
+    var jsonData = json.decode(response);
+    if (jsonData.isEmpty || jsonData.length < 2) return List.empty();
+    return jsonData[1] as List<dynamic>;
   }
 }

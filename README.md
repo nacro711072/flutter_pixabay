@@ -13,6 +13,14 @@
 - 熟悉flutter 常用套件
 - flutter 常用 design pattern
 
+## 頁面
+- Home
+  - 搜尋結果的圖片牆
+- Search
+  - 搜尋框
+  - 推薦搜尋項目
+  - 歷史搜尋
+    
 ### 細項
 
 1. 常用的Widget -> `Col`, `Row`, `Image`, `Text`, `ListView`, `TextField`...
